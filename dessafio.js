@@ -4,10 +4,11 @@ class ProductManager{
     };
 
     getProducts(){
-        console.log(this.products);
+        console.table(this.products);
     };
 
     addProduct(title,description,price,thumbnail,code,stock){ 
+        const codeExits = this.products.some((elm)=>elm.code == code);
         let newId;
         if(this.products.length==0){
             newId=1
@@ -16,9 +17,10 @@ class ProductManager{
         } 
         if (!title || !description || !price || !thumbnail || !code || !stock){
             console.log("Todos los campos deben ser completados")
-        } else if(this.products.find(elm=>elm.code===newProduct.code)){
-            console.log("No se permiten repetir productos con el mismo code")
-        }else {
+        } else { 
+                if(codeExits){
+                    console.log("No se permiten repetir productos con el mismo code")
+        } else {
             const newProduct = {
             id: newId,
             title,
@@ -31,14 +33,15 @@ class ProductManager{
         this.products.push(newProduct);
         console.log("El producto fue agregado correctamente");
         }
+        }
     }
 
-    getProductsById() {
-        const productId = this.products.find((elm)=>elm.id === newProduct.id);
+    getProductsById(id) {
+        const productId = this.products.find((elm)=>elm.id == id);
         if(!productId){
-            console.log("El producto no existe")
+            console.log("Not Found")
         }else {
-            console.log("productId", productId)
+            console.log("EL producto buscado por ID es:", productId)
         }
     }
 }
@@ -48,4 +51,10 @@ const manager = new ProductManager();
 manager.addProduct("Pantalon","pantalon gris", 200, "Sin imagen", "PGU", 25);
 manager.addProduct("Remera","remera azul", 200, "Sin imagen", "RAH", 25);
 manager.getProducts();
-manager.getProductsById(1);
+manager.addProduct("Remera","remera violeta", 200, "Sin imagen", "RAH", 25);
+manager.getProducts();
+manager.addProduct("Remera","remera violeta", 200, "Sin imagen", "RVH", 25);
+manager.getProducts();
+manager.getProductsById(3);
+manager.getProductsById(8);
+
