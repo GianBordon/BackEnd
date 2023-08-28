@@ -25,6 +25,8 @@
     }
 
     async addProduct(productData) {
+        await this.loadProductsFromFile();
+
         const codeExists = this.products.some((product) => product.code === productData.code);
 
         if (codeExists) {
