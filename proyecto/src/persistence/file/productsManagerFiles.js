@@ -51,16 +51,19 @@ export class ProductsManagerFiles {
 
     async getProductById(productId) {
         try {
-        const products = await this.getProducts();
-        const product = products.find((p) => p.id === productId);
-        if (!product) {
-            throw new Error('El producto no existe');
-        }
-        return product;
+            const products = await this.getProducts();
+            const product = products.find((p) => p.id === productId);
+    
+            if (!product) {
+                throw new Error('El producto no existe');
+            }
+    
+            return product;
         } catch (error) {
-        throw error;
+            throw error;
         }
     }
+    
 
     async updateProduct(updatedProduct) {
         try {

@@ -17,32 +17,32 @@ const router = Router();
     next();
     }
 
-    // Middleware de validación de datos para el endpoint POST
-    function validateProductData(req, res, next) {
-    const { title, description, code, price, stock, category } = req.body;
+    // Middleware de validación de datos para crear un producto
+    export const validateProductData = (req, res, next) => {
+        const {
+            title,
+            description,
+            code,
+            price,
+            category,
+            thumbnails,
+        } = req.body;
 
-    if (!title || !description || !code || !price || !stock || !category ) {
-        return res
-        .status(400)
-        .json({ status: "error", message: "Todos los campos son obligatorios" });
-    }
+        if (!title || !description || !code || !price || !category ) {
+            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+        }
 
-    if (isNaN(price) || isNaN(stock)) {
-        return res
-        .status(400)
-        .json({ status: "error", message: "price y stock deben ser números" });
-    }
+        // Verificar que 'price' y 'stock' sean números
+        if (isNaN(price)) {
+            return res.status(400).json({ error: 'El campo "price" debe ser un número' });
+        }
 
-    // Agregar valor por defecto para 'status'
-    req.body.status = true;
+        req.body.thumbnails = thumbnails || [];
 
-    // Verificar si 'thumbnails' es proporcionado, si no, asignar un array vacío
-    // req.body.thumbnails = thumbnails || [];
-    // if (!thumbnails || !Array.isArray(thumbnails)) {
-    //     return res.status(400).json({ error: 'Thumbnails debe ser un arreglo' });
-    // }
-    next();
-    }
+        // Si todo está bien, continúa con la siguiente función (generalmente el controlador)
+        next();
+    };
+
 
     // Ruta raíz GET para listar todos los productos (con limitación opcional)
     router.get("/", limitProducts, async (req, res) => {
@@ -90,20 +90,32 @@ router.put("/:pid", async (req, res) => {
         const productId = parseInt(req.params.pid);
         const updatedData = req.body;
 
+        // Verificar si se intenta actualizar el ID
+        if ("id" in updatedData) {
+            return res.status(400).json({ status: "error", message: "No se puede actualizar el ID del producto" });
+        }
+        
         // Verificar si el producto existe antes de intentar actualizarlo
         const existingProduct = await productsService.getProductById(productId);
         if (!existingProduct) {
             return res.status(404).json({ status: "error", message: "Producto no encontrado" });
         }
 
-        // Actualizar el producto
-        await productsService.updateProduct(productId, updatedData);
+        // Actualizar los campos del producto existente con los datos actualizados
+        const updatedProduct = {
+            ...existingProduct, 
+            ...updatedData,     
+            id: productId      
+        };
+
+        // Luego, actualiza el producto con los nuevos datos
+        await productsService.updateProduct(updatedProduct);
+
         res.json({ status: "success", message: "Producto actualizado correctamente" });
     } catch (error) {
         res.status(500).json({ status: "error", message: error.message });
     }
 });
-
 
     // Ruta DELETE para eliminar un producto por su ID
     router.delete("/:pid", async (req, res) => {

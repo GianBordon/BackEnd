@@ -4,7 +4,7 @@
     "title": "Remera Azul",
     "description": "Una hermosa remera azul.",
     "code": "REM001",
-    "price": 19.99,
+    "price": 39.99,
     "stock": 50,
     "category": "Remeras",
     "status": true
@@ -50,16 +50,6 @@
     "status": true
   },
   {
-    "id": 6,
-    "title": "Jeans Ajustados",
-    "description": "Jeans ajustados de moda.",
-    "code": "JEANS002",
-    "price": 44.99,
-    "stock": 25,
-    "category": "Jeans",
-    "status": true
-  },
-  {
     "id": 7,
     "title": "Buzo con Capucha",
     "description": "Un buzo cómodo con capucha.",
@@ -84,7 +74,7 @@
     "title": "Jeans Rasgados",
     "description": "Jeans con efecto rasgado.",
     "code": "JEANS003",
-    "price": 49.99,
+    "price": 24.99,
     "stock": 22,
     "category": "Jeans",
     "status": true
@@ -108,5 +98,55 @@
     "status": true,
     "stock": 50,
     "category": "Electrónica"
+  },
+  {
+    "id": 12,
+    "title": "Remera Naranja",
+    "description": "Una hermosa remera de color naranja.",
+    "code": "RMR001",
+    "price": 19.99,
+    "status": true,
+    "stock": 10,
+    "category": "Ropa",
+    "thumbnails": [
+      "ruta_imagen_1.jpg",
+      "ruta_imagen_2.jpg"
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Buzo Violeta",
+    "description": "Un cómodo buzo violeta",
+    "code": "BUZO008",
+    "price": 39.99,
+    "status": true,
+    "stock": 10,
+    "category": "Buzos",
+    "thumbnails": []
+  },
+  {
+    "id": 14,
+    "title": "Remera Fucsia",
+    "description": "Una hermosa remera de color fucsia.",
+    "code": "RF001",
+    "price": 19.99,
+    "status": true,
+    "stock": 50,
+    "category": "Ropa",
+    "thumbnails": [
+      "ruta_imagen_1.jpg",
+      "ruta_imagen_2.jpg"
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Buzo Negro",
+    "description": "Un cómodo buzo de color negro.",
+    "code": "BN001",
+    "price": 29.99,
+    "status": true,
+    "stock": 30,
+    "category": "Ropa",
+    "thumbnails": []
   }
 ]
