@@ -18,6 +18,7 @@ app.use('/api/products', productsRouter);
 // Usamos el router de carritos
 app.use('/api/carts', cartsRouter);
 
+// Escuchamos el puerto en que inicamos el servidor 
 app.listen(port, () => {
     console.log(`Servidor Express escuchando en el puerto ${port}`);
 });

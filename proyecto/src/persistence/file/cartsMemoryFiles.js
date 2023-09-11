@@ -1,14 +1,17 @@
 import fs from "fs";
 
+// Creo y exporto la clase con los metodos a utilizar en las rutas 
 export class CartsManagerFiles {
     constructor(path) {
         this.pathFile = path;
     }
 
+    // Verifico si existe el archivo
     fileExists() {
         return fs.existsSync(this.pathFile);
     }
 
+    // Metodo para obtener los carritos
     async getCarts() {
         try {
             if (this.fileExists()) {
@@ -23,6 +26,7 @@ export class CartsManagerFiles {
         }
     }
 
+    // Metodo para crear un carrito 
     async createCart() {
         try {
             if (this.fileExists()) {
@@ -43,6 +47,7 @@ export class CartsManagerFiles {
         }
     }
     
+    // Metodo para obtener todos los carritos existentes
     async getAllCarts() {
         try {
             const carts = await this.getCarts();
@@ -52,6 +57,7 @@ export class CartsManagerFiles {
         }
     }
     
+    // Metodo para agregar un producto a un carrito 
     async addProduct(cartId, productId) {
         try {
             const carts = await this.getCarts();
@@ -68,6 +74,7 @@ export class CartsManagerFiles {
         }
     }
 
+    // Metodo para agregar la cantidad y que se sume por la cantidad que le estoy pidiendo 
     async addProductToCart(cartId, productId, quantity = 1) {
     const carts = await this.getCarts();
 
@@ -94,6 +101,7 @@ export class CartsManagerFiles {
     return carts.find((cart) => cart.id === cartId);
     }   
     
+    // Metodo para obtener carritos por su ID
     async getCartById(cartId) {
         try {
             const carts = await this.getCarts();
@@ -107,6 +115,7 @@ export class CartsManagerFiles {
         }
     }
 
+    // Metodo para guardar los carritos
     async saveCarts(carts) {
         try {
             await fs.promises.writeFile(this.pathFile, JSON.stringify(carts, null, '\t'));

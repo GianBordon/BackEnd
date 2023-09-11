@@ -1,14 +1,17 @@
 import fs from 'fs';
 
+// Creo y exporto la clase con los metodos a utilzar en mis rutas
 export class ProductsManagerFiles {
     constructor(path) {
         this.pathFile = path;
     }
 
+    // Verifico si existe el archivo
     fileExists() {
         return fs.existsSync(this.pathFile);
     }
 
+    // Metodo para crear un producto
     async createProduct(productInfo) {
         try {
         const products = await this.getProducts();
@@ -19,6 +22,7 @@ export class ProductsManagerFiles {
             throw new Error('Ya existe un producto con el mismo código');
         }
 
+        // Creo un ID unico y autoincrementable
         const newProductId = products.length === 0 ? 1 : products[products.length - 1].id + 1;
 
         const newProduct = {
@@ -34,6 +38,7 @@ export class ProductsManagerFiles {
         }
     }
 
+    // Metodo para obtener todos los productos 
     async getProducts() {
         try {
         if (this.fileExists()) {
@@ -49,6 +54,7 @@ export class ProductsManagerFiles {
         }
     }
 
+    // Metodo para obetner un producto segun su ID
     async getProductById(productId) {
         try {
             const products = await this.getProducts();
@@ -65,6 +71,7 @@ export class ProductsManagerFiles {
     }
     
 
+    // Metodo para actualizar un producto segun su ID
     async updateProduct(updatedProduct) {
         try {
         const products = await this.getProducts();
@@ -82,6 +89,7 @@ export class ProductsManagerFiles {
         }
     }
 
+    // Metodo para borrar algun producto segun su ID 
     async deleteProduct(productId) {
         try {
         const products = await this.getProducts();
@@ -98,6 +106,7 @@ export class ProductsManagerFiles {
         }
     }
 
+    // Metodo para guardar los productos
     async saveProducts(products) {
         try {
         const contenido = JSON.stringify(products, null, 2);

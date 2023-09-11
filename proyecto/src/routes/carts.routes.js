@@ -43,7 +43,7 @@ router.get('/:cid', validateCartId, async (req, res) => {
     }
 });
 
-// Rtua para obtener todos los carritos
+// Ruta para obtener todos los carritos
 router.get('/', async (req, res) => {
     try {
         const carts = await cartsService.getAllCarts();

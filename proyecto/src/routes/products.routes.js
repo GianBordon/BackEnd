@@ -32,14 +32,12 @@ const router = Router();
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
-        // Verificar que 'price' y 'stock' sean números
         if (isNaN(price)) {
             return res.status(400).json({ error: 'El campo "price" debe ser un número' });
         }
 
         req.body.thumbnails = thumbnails || [];
 
-        // Si todo está bien, continúa con la siguiente función (generalmente el controlador)
         next();
     };
 
@@ -101,14 +99,12 @@ router.put("/:pid", async (req, res) => {
             return res.status(404).json({ status: "error", message: "Producto no encontrado" });
         }
 
-        // Actualizar los campos del producto existente con los datos actualizados
         const updatedProduct = {
             ...existingProduct, 
             ...updatedData,     
             id: productId      
         };
 
-        // Luego, actualiza el producto con los nuevos datos
         await productsService.updateProduct(updatedProduct);
 
         res.json({ status: "success", message: "Producto actualizado correctamente" });
