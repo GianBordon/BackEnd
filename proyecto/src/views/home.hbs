@@ -1,0 +1,12 @@
+<h1>Pagina del Home</h1>
+
+<h1>Lista de Productos</h1>
+<ul>
+    {{#each products}}
+        <li>{{this.name}} - Precio: ${{this.price}}</li>
+    {{/each}}
+</ul>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/home.js"></script>

@@ -1,24 +1,39 @@
 import express from 'express';
+import { engine } from 'express-handlebars';
+import { __dirname } from "./utils.js";
+import path from "path";
+import { Server } from 'socket.io'; 
+import { viewsRouter } from './routes/views.routes.js';
 import { productsRouter } from './routes/products.routes.js';
 import { cartsRouter } from './routes/carts.routes.js';
 
+// const exphbs = require("express-handlebars");
+
 const app = express();
 const port = 8080;
+//servidor de express con el protocolo http
+const httpServer = app.listen(port,()=> console.log(`Servidor Express escuchando en el puerto ${port}`));
 
-app.use(express.json());
+//configuracion del motor de plantillas
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', '.hbs');
+app.set('views', path.join(__dirname,"/views"));
 
-// Ruta para la página principal
-app.get('/', (req, res) => {
-    res.send('¡Hola, Bienvenidos a mi Página!');
-});
+// Midelware para los archivos js y css
+app.use(express.static(path.join(__dirname,"/public")));
 
-// Usamos el router de productos
+//Rutas para las Vistas
+app.use(viewsRouter);
+
+// Rutas de productos y carritos
 app.use('/api/products', productsRouter);
-
-// Usamos el router de carritos
 app.use('/api/carts', cartsRouter);
 
-// Escuchamos el puerto en que inicamos el servidor 
-app.listen(port, () => {
-    console.log(`Servidor Express escuchando en el puerto ${port}`);
+// Creo el servidor HTTP y WebSocket
+const socketServer = new Server(httpServer);
+
+// Configuración de WebSocket
+socketServer.on('connection', (socket) => {
+    console.log("Cliente Conectado", socket.id)
+
 });
