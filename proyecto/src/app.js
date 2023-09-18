@@ -11,6 +11,7 @@ import { cartsRouter } from './routes/carts.routes.js';
 
 const app = express();
 const port = 8080;
+
 //servidor de express con el protocolo http
 const httpServer = app.listen(port,()=> console.log(`Servidor Express escuchando en el puerto ${port}`));
 
