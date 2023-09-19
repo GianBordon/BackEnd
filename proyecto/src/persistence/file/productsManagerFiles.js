@@ -38,19 +38,19 @@ export class ProductsManagerFiles {
         }
     }
 
+    
     // Metodo para obtener todos los productos 
     async getProducts() {
         try {
-        if (this.fileExists()) {
-            const contenidoString = await fs.promises.readFile(this.pathFile, 'utf-8');
-            const products = JSON.parse(contenidoString);
-            return products;
-        } else {
-            // Si el archivo no existe, retornar un arreglo vacío
-            return [];
-        }
+            if (this.fileExists()) {
+                const contenidoString = await fs.promises.readFile(this.pathFile, 'utf-8');
+                const products = JSON.parse(contenidoString);
+                return products;
+            } else {
+                return [];
+            }
         } catch (error) {
-        throw error;
+            console.error('Error al leer productos desde el archivo:', error); 
         }
     }
 
@@ -116,3 +116,4 @@ export class ProductsManagerFiles {
         }
     }
 }
+

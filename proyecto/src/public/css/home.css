@@ -1,3 +1,16 @@
-h1 {
-    color: blue;
+/* Estilos para la lista de productos */
+.products-list {
+    list-style: none; 
+    padding: 0; 
+    display: flex; 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+}
+/* Estilos para los elementos de la lista de productos */
+.product-item {
+    border: 1px solid #000814; 
+    padding: 10px;
+    margin: 5px; 
+    width: 20%;
 }

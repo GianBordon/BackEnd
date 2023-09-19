@@ -1,15 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "Remera Azul",
-    "description": "Una hermosa remera azul.",
-    "code": "REM001",
-    "price": 39.99,
-    "stock": 50,
-    "category": "Remeras",
-    "status": true
-  },
-  {
     "id": 2,
     "title": "Remera Roja",
     "description": "Una elegante remera roja.",
@@ -98,20 +88,6 @@
     "status": true,
     "stock": 50,
     "category": "Electrónica"
-  },
-  {
-    "id": 12,
-    "title": "Remera Naranja",
-    "description": "Una hermosa remera de color naranja.",
-    "code": "RMR001",
-    "price": 19.99,
-    "status": true,
-    "stock": 10,
-    "category": "Ropa",
-    "thumbnails": [
-      "ruta_imagen_1.jpg",
-      "ruta_imagen_2.jpg"
-    ]
   },
   {
     "id": 13,

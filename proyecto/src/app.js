@@ -6,8 +6,7 @@ import { Server } from 'socket.io';
 import { viewsRouter } from './routes/views.routes.js';
 import { productsRouter } from './routes/products.routes.js';
 import { cartsRouter } from './routes/carts.routes.js';
-
-// const exphbs = require("express-handlebars");
+import { productsService } from './persistence/index.js';
 
 const app = express();
 const port = 8080;
@@ -34,7 +33,27 @@ app.use('/api/carts', cartsRouter);
 const socketServer = new Server(httpServer);
 
 // Configuración de WebSocket
-socketServer.on('connection', (socket) => {
-    console.log("Cliente Conectado", socket.id)
+socketServer.on('connection', async (socket) => {
+    console.log("Cliente Conectado:", socket.id)
+    const products = await productsService.getProducts();
+    socket.emit("productsArray", products);
 
+    //recibir el producto del socket del cliente
+    socket.on("addProduct",async(productData)=>{
+        const result = await productsService.createProduct(productData);
+        const products = await productsService.getProducts();
+        socket.emit("productsArray", products);
+    });
+
+     // Recibir el producto a eliminar del socket del cliente
+    socket.on("deleteProduct", async (productId) => {
+        // Agrega la lógica para eliminar el producto de tu lista de productos
+        await productsService.deleteProduct(productId);
+
+        // Obtiene la lista de productos actualizada
+        const updatedProducts = await productsService.getProducts();
+
+        // Emite la lista actualizada a todos los clientes conectados
+        socket.emit("productsArray", updatedProducts);
+    });
 });

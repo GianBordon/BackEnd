@@ -57,13 +57,17 @@ const router = Router();
 
     // Ruta POST para agregar un nuevo producto
     router.post("/", validateProductData, async (req, res) => {
-    try {
-        const productInfo = req.body;
-        await productsService.createProduct(productInfo);
-        res.status(201).json({ status: "success", message: "Producto agregado correctamente" });
-    } catch (error) {
-        res.status(500).json({ status: "error", message: error.message });
-    }
+        try {
+            const productInfo = req.body;
+            await productsService.createProduct(productInfo);
+
+            // Emitir un evento a través de socket.io para actualizar la lista de productos
+            io.emit('productAdded', { message: 'Un nuevo producto ha sido agregado' });
+
+            res.status(201).json({ status: "success", message: "Producto agregado correctamente" });
+        } catch (error) {
+            res.status(500).json({ status: "error", message: error.message });
+        }
     });
 
     // Ruta GET para obtener un producto por ID
@@ -82,46 +86,50 @@ const router = Router();
     }
     });
 
-// Ruta PUT para actualizar un producto por su ID
-router.put("/:pid", async (req, res) => {
-    try {
-        const productId = parseInt(req.params.pid);
-        const updatedData = req.body;
+    // Ruta PUT para actualizar un producto por su ID
+    router.put("/:pid", async (req, res) => {
+        try {
+            const productId = parseInt(req.params.pid);
+            const updatedData = req.body;
 
-        // Verificar si se intenta actualizar el ID
-        if ("id" in updatedData) {
-            return res.status(400).json({ status: "error", message: "No se puede actualizar el ID del producto" });
+            // Verificar si se intenta actualizar el ID
+            if ("id" in updatedData) {
+                return res.status(400).json({ status: "error", message: "No se puede actualizar el ID del producto" });
+            }
+            
+            // Verificar si el producto existe antes de intentar actualizarlo
+            const existingProduct = await productsService.getProductById(productId);
+            if (!existingProduct) {
+                return res.status(404).json({ status: "error", message: "Producto no encontrado" });
+            }
+
+            const updatedProduct = {
+                ...existingProduct, 
+                ...updatedData,     
+                id: productId      
+            };
+
+            await productsService.updateProduct(updatedProduct);
+
+            res.json({ status: "success", message: "Producto actualizado correctamente" });
+        } catch (error) {
+            res.status(500).json({ status: "error", message: error.message });
         }
-        
-        // Verificar si el producto existe antes de intentar actualizarlo
-        const existingProduct = await productsService.getProductById(productId);
-        if (!existingProduct) {
-            return res.status(404).json({ status: "error", message: "Producto no encontrado" });
-        }
-
-        const updatedProduct = {
-            ...existingProduct, 
-            ...updatedData,     
-            id: productId      
-        };
-
-        await productsService.updateProduct(updatedProduct);
-
-        res.json({ status: "success", message: "Producto actualizado correctamente" });
-    } catch (error) {
-        res.status(500).json({ status: "error", message: error.message });
-    }
-});
+    });
 
     // Ruta DELETE para eliminar un producto por su ID
     router.delete("/:pid", async (req, res) => {
-    try {
-        const productId = parseInt(req.params.pid);
-        await productsService.deleteProduct(productId);
-        res.json({ status: "success", message: "Producto eliminado correctamente" });
-    } catch (error) {
-        res.status(500).json({ status: "error", message: error.message });
-    }
+        try {
+            const productId = parseInt(req.params.pid);
+            await productsService.deleteProduct(productId);
+
+            // Emitir un evento a través de socket.io para actualizar la lista de productos
+            io.emit('productDeleted', { message: 'Un producto ha sido eliminado' });
+
+            res.json({ status: "success", message: "Producto eliminado correctamente" });
+        } catch (error) {
+            res.status(500).json({ status: "error", message: error.message });
+        }
     });
 
 export { router as productsRouter };
