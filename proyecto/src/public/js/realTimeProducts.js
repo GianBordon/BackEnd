@@ -57,7 +57,5 @@ socket.on("productsArray", (dataProducts)=>{
     productList.innerHTML=productsElms;
 });
 
-const deleteProduct = (productId)=>{
-    socket.emit("deleteProduct", productId);
-};
+
 

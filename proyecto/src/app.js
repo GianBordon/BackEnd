@@ -6,7 +6,8 @@ import { Server } from 'socket.io';
 import { viewsRouter } from './routes/views.routes.js';
 import { productsRouter } from './routes/products.routes.js';
 import { cartsRouter } from './routes/carts.routes.js';
-import { productsService } from './persistence/index.js';
+import { chatService } from './dao/index.js';
+import { connectDB } from './config/dbConnection.js';
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -22,6 +23,9 @@ app.set('views', path.join(__dirname,"/views"));
 // Midelware para los archivos js y css
 app.use(express.static(path.join(__dirname,"/public")));
 
+// Conexion bade de datos 
+connectDB();
+
 //Rutas para las Vistas
 app.use(viewsRouter);
 
@@ -35,25 +39,14 @@ const socketServer = new Server(httpServer);
 // Configuración de WebSocket
 socketServer.on('connection', async (socket) => {
     console.log("Cliente Conectado:", socket.id)
-    const products = await productsService.getProducts();
+    const products = await chatService.getMessages();
     socket.emit("productsArray", products);
 
-    //recibir el producto del socket del cliente
-    socket.on("addProduct",async(productData)=>{
-        const result = await productsService.createProduct(productData);
-        const products = await productsService.getProducts();
-        socket.emit("productsArray", products);
-    });
+//recibir el producto del socket del cliente
+socket.on("addProduct",async(productData)=>{
+    const result = await chatService.addMessage(productData);
+    const products = await chatService.getMessages();
+    socket.emit("productsArray", products);
+});
 
-     // Recibir el producto a eliminar del socket del cliente
-    socket.on("deleteProduct", async (productId) => {
-        // Agrega la lógica para eliminar el producto de tu lista de productos
-        await productsService.deleteProduct(productId);
-
-        // Obtiene la lista de productos actualizada
-        const updatedProducts = await productsService.getProducts();
-
-        // Emite la lista actualizada a todos los clientes conectados
-        socket.emit("productsArray", updatedProducts);
-    });
 });

@@ -1,0 +1,37 @@
+proyecto/
+                   node_modules
+                   src/
+                          files/
+                                    carts.json
+                                    productos.json
+                   persistence/
+                                             file/
+                                                    cartsManagerFiles.js
+                                                    productsManagerFiles.js
+                                             memory/
+                                                    (vacío por ahora esta carpeta)
+                                             index.js
+                   public/
+                                 css/
+                                     main.css
+                                     home.css
+                                     realTimeProducts.css
+                                 js/
+                                     main.js
+                                     home.js
+                                     realTimeProducts.js
+                   views/
+                                 layouts/
+                                         main.hbs
+                                 home.hbs
+                                 realTimeProducts.hbs
+                   routes/
+                                 carts.routes.js
+                                 products.routes.js
+                                 views.routes.js
+                   app.js
+                   utils.js
+                   package-lock.json
+                   package.json   
+                   .gitignore
+

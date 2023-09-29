@@ -1,25 +1,7 @@
 import { Router } from 'express';
-import { cartsService } from '../persistence/index.js';
+import { cartsService } from '../dao/index.js';
 
 const router = Router();
-
-// Middleware de validación de ID de carrito
-function validateCartId(req, res, next) {
-    const cartId = parseInt(req.params.cid);
-    if (typeof cartId !== 'string' && isNaN(cartId)) {
-        return res.status(400).json({ error: 'ID de carrito no válido' });
-    }
-    next();
-}
-
-// Middleware de validación de ID de producto
-function validateProductId(req, res, next) {
-    const productId = parseInt(req.params.pid);
-    if (typeof productId !== 'string' && isNaN(productId)) {
-        return res.status(400).json({ error: 'ID de producto no válido' });
-    }
-    next();
-}
 
 // Ruta para crear un nuevo carrito
 router.post('/', async (req, res) => {
@@ -55,7 +37,7 @@ router.get('/', async (req, res) => {
 
 
 // Ruta para agregar un producto a un carrito
-router.post('/:cid/product/:pid', validateCartId, validateProductId, async (req, res) => {
+router.post('/:cid/product/:pid', async (req, res) => {
     const cartId = parseInt(req.params.cid);
     const productId = parseInt(req.params.pid);
     const quantity = parseInt(req.body.quantity);
