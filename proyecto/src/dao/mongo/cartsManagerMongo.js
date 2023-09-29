@@ -2,17 +2,29 @@ import { cartsModel } from "./models/carts.model.js";
 
 export class CartsManagerMongo{
     constructor(){
-
+        this.model = cartsModel
     }
 
     // Metodo para obtener los carritos
     async getCarts(){
-
+        try {
+            const result = await this.model.find();
+            return result
+        } catch (error) {
+            console.log("getCarts",error.message);
+            throw new Error("No se pudieron obtener los carritos");
+        }
     }
 
     // Metodo para crear un carrito 
     async createCart(){
-
+        try {
+            const result = await this.model.find();
+            return result
+        } catch (error) {
+            console.log("createCart",error.message);
+            throw new Error("No se pudo crear el carrito");
+        }
     }
 
     // Metodo para obtener todos los carritos existentes
