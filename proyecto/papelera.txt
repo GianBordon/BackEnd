@@ -4,31 +4,41 @@ proyecto/
                           files/
                                     carts.json
                                     productos.json
-                   persistence/
+                          config/
+                                    dbConnection.js
+                          dao/
                                              file/
                                                     cartsManagerFiles.js
                                                     productsManagerFiles.js
                                              memory/
                                                     (vacío por ahora esta carpeta)
+                                             mongo/ 
+                                                    models/
+                                                            carts.model.js
+                                                            chat.model.js
+                                                            products.model.js
+                                                    cartsManagerMongo.js
+                                                    chatManagerMongo.js
+                                                    productsManagerMongo.js
                                              index.js
-                   public/
-                                 css/
-                                     main.css
-                                     home.css
-                                     realTimeProducts.css
-                                 js/
-                                     main.js
-                                     home.js
-                                     realTimeProducts.js
-                   views/
-                                 layouts/
-                                         main.hbs
-                                 home.hbs
-                                 realTimeProducts.hbs
-                   routes/
-                                 carts.routes.js
-                                 products.routes.js
-                                 views.routes.js
+                          public/
+                                    css/
+                                             main.css
+                                             home.css
+                                             chat.css
+                                    js/
+                                             main.js
+                                             home.js
+                                             chat.js
+                          views/
+                                    layouts/
+                                             main.hbs
+                                    home.hbs
+                                    chat.hbs
+                          routes/
+                                    carts.routes.js
+                                    products.routes.js
+                                    views.routes.js
                    app.js
                    utils.js
                    package-lock.json

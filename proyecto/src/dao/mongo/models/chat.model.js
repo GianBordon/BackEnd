@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const chatCollection = "chat";
+const messageCollection = 'messages';
 
-const chatSchema = new mongoose.Schema({
+const messageSchema = new mongoose.Schema({
     user:{
         type:String,
         required:true,
@@ -14,4 +14,4 @@ const chatSchema = new mongoose.Schema({
     }
 });
 
-export const chatModel = mongoose.model(chatCollection,chatSchema);
+export const MessageModel = mongoose.model(messageCollection, messageSchema);

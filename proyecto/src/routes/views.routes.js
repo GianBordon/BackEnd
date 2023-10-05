@@ -9,9 +9,9 @@ router.get("/", async(req,res)=>{
     res.render("home",{products:products, style});
 });
 
-router.get("/realtimeproducts", (req,res)=>{
-    const style = "realTimeProducts.css";
-    res.render("realTimeProducts", {style});
+router.get("/chat", (req,res)=>{
+    const style = "chat.css";
+    res.render("chat", {style});
 });
 
 export {router as viewsRouter}

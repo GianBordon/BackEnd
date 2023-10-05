@@ -13,17 +13,17 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 //servidor de express con el protocolo http
-const httpServer = app.listen(port,()=> console.log(`Servidor Express escuchando en el puerto ${port}`));
+const httpServer = app.listen(port, () => console.log(`Servidor Express escuchando en el puerto ${port}`));
 
 //configuracion del motor de plantillas
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
-app.set('views', path.join(__dirname,"/views"));
+app.set('views', path.join(__dirname, "/views"));
 
 // Midelware para los archivos js y css
-app.use(express.static(path.join(__dirname,"/public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
-// Conexion bade de datos 
+// Conexion base de datos 
 connectDB();
 
 //Rutas para las Vistas
@@ -33,20 +33,25 @@ app.use(viewsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
-// Creo el servidor HTTP y WebSocket
-const socketServer = new Server(httpServer);
+// Configurar WebSocket
+const io = new Server(httpServer);
 
-// Configuración de WebSocket
-socketServer.on('connection', async (socket) => {
-    console.log("Cliente Conectado:", socket.id)
-    const products = await chatService.getMessages();
-    socket.emit("productsArray", products);
+io.on('connection', (socket) => {
+    console.log('Cliente Conectado:', socket.id);
 
-//recibir el producto del socket del cliente
-socket.on("addProduct",async(productData)=>{
-    const result = await chatService.addMessage(productData);
-    const products = await chatService.getMessages();
-    socket.emit("productsArray", products);
+    // Emitir el historial de chat cuando un cliente se conecta
+    socket.on('authenticated', async (user) => {
+        const messages = await chatService.getMessages();
+        socket.emit('chatHistory', messages);
+        socket.broadcast.emit('newUser', `El usuario ${user} se ha unido al chat.`);
+    });
+
+socket.on("enviarMensaje", async (messageData) => {
+    console.log(`Nuevo mensaje de ${messageData.usuario}: ${messageData.mensaje}`);
+    const result = await chatService.addMessage(messageData);
+    const messages = await chatService.getMessages();
+    socket.emit("nuevoMensaje", messages);
 });
 
 });
+

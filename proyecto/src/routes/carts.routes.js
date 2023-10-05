@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
 
 
 // Ruta para obtener los productos de un carrito
-router.get('/:cid', validateCartId, async (req, res) => {
+router.get('/:cid',  async (req, res) => {
     const cartId = parseInt(req.params.cid);
     try {
         const cart = await cartsService.getCartById(cartId);
