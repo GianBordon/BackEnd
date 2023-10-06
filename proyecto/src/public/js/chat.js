@@ -8,10 +8,8 @@ function mostrarMensaje(usuario, mensaje) {
     mensajeElement.innerHTML = `<strong>${usuario}:</strong> ${mensaje}`;
     chatMessages.appendChild(mensajeElement);
 }
-
 // Captura el formulario de envío de mensajes
 const messageForm = document.querySelector(".chat-input");
-const sendMsg = document.getElementById("sendMsg"); // Agregamos esta línea
 
 // Manejar el envío de un mensaje
 sendMsg.addEventListener("click", () => {
@@ -25,11 +23,15 @@ sendMsg.addEventListener("click", () => {
     }
 
     // Enviar el mensaje al servidor a través de Socket.io
-socket.emit("enviarMensaje", { usuario: userInput, mensaje: messageInput });
+    socket.emit("enviarMensaje", { usuario: userInput, mensaje: messageInput });
 
-// Limpiar el campo de mensaje
-document.querySelector("#messageInput").value = "";
+    // Limpiar el campo de mensaje
+    document.querySelector("#messageInput").value = "";
+});
 
+socket.on("nuevoMensaje", (data) => {
+    console.log(`Nuevo mensaje recibido: ${data.usuario} - ${data.mensaje}`);
+    mostrarMensaje(data.usuario, data.mensaje);
 });
 
 
