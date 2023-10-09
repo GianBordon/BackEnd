@@ -1,68 +1,52 @@
 import { productsModel } from "./models/products.model.js";
 
-export class ProductsManagerMongo{
-    constructor(){
+export class ProductsManagerMongo {
+    constructor() {
         this.model = productsModel;
-    };
-
-    // Metodo para crear un producto
-    async createProduct(productInfo){
-        try {
-            const result = await this.model.create(productInfo);
-            return result;
-        } catch (error) {
-            console.log("createProduct",error.message);
-            throw new Error("No se pudo crear el producto");
-        }
     }
-    
-    // Metodo para obtener todos los productos 
-    async getProducts(){
+
+    async createProduct(productData) {
         try {
-            const result = await this.model.find();
-            return result;
+            const newProduct = await this.model.create(productData);
+            return newProduct;
         } catch (error) {
-            console.log("getProducts",error.message);
-            throw new Error("No se pudo obtener el listado de productos");
+            throw error;
         }
     }
 
-    // Metodo para obetner un producto segun su ID
-    async getProductById(productId){
+    async getAllProducts() {
         try {
-            const result = await this.model.findById(productId);
-            return result;
+            const products = await this.model.find();
+            return products;
         } catch (error) {
-            console.log("getProductById",error.message);
-            throw new Error("No se pudo obtener el producto");
+            throw error;
         }
     }
 
-    // Metodo para actualizar un producto segun su ID
-    async updateProduct(productId, newProductInfo){
+    async getProductById(productId) {
         try {
-            const result = await this.model.findByIdAndUpdate(productId,newProductInfo,{new:true});
-            if(!result){
-                throw new Error("No se pudo encontrar el producto a actualizar");
-            }
-            return result;
+            const product = await this.model.findById(productId);
+            return product;
         } catch (error) {
-            console.log("updateProduct",error.message);
-            throw new Error("No se pudo actualizar el producto");
+            throw error;
         }
     }
 
-    // Metodo para borrar algun producto segun su ID 
-    async deleteProduct(productId){
+    async updateProductById(productId, updatedData) {
         try {
-            const result = await this.model.findByIdAndDelete(productId);
-            if(!result){
-                throw new Error("No se pudo encontrar el producto a eliminar");
-            }
-            return result;
+            const updatedProduct = await this.model.findByIdAndUpdate(productId, updatedData, { new: true });
+            return updatedProduct;
         } catch (error) {
-            console.log("deleteProduct",error.message);
-            throw new Error("No se pudo eliminar el producto");
+            throw error;
+        }
+    }
+
+    async deleteProductById(productId) {
+        try {
+            const deletedProduct = await this.model.findByIdAndDelete(productId);
+            return deletedProduct;
+        } catch (error) {
+            throw error;
         }
     }
 }

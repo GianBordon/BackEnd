@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema({
     category:{
         type:String,
         required:true,
-        enum:["Cartoonnertwork", "Dragon Ball", "Harry Potter", "Star Wars", "Originales", "Disney", "Nickelodeon", "DC"]
+        enum:["Remeras", "Buzos", "Pantalones", "Sweater"]
     },
     stock:{
         type:Number,

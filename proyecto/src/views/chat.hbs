@@ -1,15 +1,13 @@
 <h1>Chat en Vivo</h1>
 
 <div class="chat-container">
-    <div class="chat-messages">
-        <!-- Aquí se mostrarán los mensajes del chat -->
-    </div>
-    
-    <div class="chat-input">
-        <input type="text" id="userInput" placeholder="Nombre de usuario">
-        <input type="text" id="messageInput" placeholder="Escribe un mensaje">
-        <button id="sendMsg">Enviar</button>
-    </div>
+    <input type="text" id="userInput" placeholder="Nombre de usuario">
+    <input type="text" id="messageInput" placeholder="Escribe un mensaje">
+    <button id="sendMsg">Enviar</button>    
+    <div class="chat-messages" id="chatMessages">
+    <!-- Aquí se mostrarán los mensajes del chat -->
+</div>
+
 </div>
 
 <script src="/socket.io/socket.io.js"></script>

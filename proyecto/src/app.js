@@ -46,13 +46,17 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('newUser', `El usuario ${user} se ha unido al chat.`);
     });
 
-    socket.on("enviarMensaje", async (messageData) => {
-        console.log(`Nuevo mensaje de ${messageData.usuario}: ${messageData.mensaje}`);
-        const result = await chatService.addMessage(messageData);
+
+socket.on("enviarMensaje", async (messageData) => {
+    console.log(`Nuevo mensaje de ${messageData.usuario}: ${messageData.mensaje}`);
     
-        // Emitir el evento "nuevoMensaje" con el objeto messageData
-        io.emit("nuevoMensaje", messageData);
-    });
+    // Llama a addMessage con los argumentos correctos (user y message)
+    const result = await chatService.addMessage(messageData.usuario, messageData.mensaje);
+
+    // Emitir el evento "nuevoMensaje" con el objeto messageData
+    io.emit("nuevoMensaje", messageData);
+});
+
 
 
 });
