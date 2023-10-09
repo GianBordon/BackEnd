@@ -1,14 +1,12 @@
 import { Router } from "express";
-import { ProductsManagerMongo } from "../dao/mongo/productsManagerMongo.js";
+import { productsService } from "../dao/index.js"
 
 const router = Router();
 
 
-const productsManagerMongo = new ProductsManagerMongo();
-
 router.get("/", async (req, res) => {
     try {
-        const products = await productsManagerMongo.getAllProducts();
+        const products = await productsService.getAllProducts();
         const style = "home.css";
         res.render("home", { products, style });
     } catch (error) {
