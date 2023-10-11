@@ -6,11 +6,12 @@ import { Server } from 'socket.io';
 import { viewsRouter } from './routes/views.routes.js';
 import { productsRouter } from './routes/products.routes.js';
 import { cartsRouter } from './routes/carts.routes.js';
-import { chatService } from './dao/index.js';
 import { connectDB } from './config/dbConnection.js';
+import cookieParser from "cookie-parser"
 
 const app = express();
 const port = process.env.PORT || 8080;
+
 
 //servidor de express con el protocolo http
 const httpServer = app.listen(port, () => console.log(`Servidor Express escuchando en el puerto ${port}`));
@@ -22,6 +23,10 @@ app.set('views', path.join(__dirname, "/views"));
 
 // Midelware para los archivos js y css
 app.use(express.static(path.join(__dirname, "/public")));
+
+// Midelware
+app.use(express.json());
+app.use(cookieParser());
 
 // Conexion base de datos 
 connectDB();
@@ -38,26 +43,5 @@ const io = new Server(httpServer);
 
 io.on('connection', (socket) => {
     console.log('Cliente Conectado:', socket.id);
-
-    // Emitir el historial de chat cuando un cliente se conecta
-    socket.on('authenticated', async (user) => {
-        const messages = await chatService.getMessages();
-        socket.emit('chatHistory', messages);
-        socket.broadcast.emit('newUser', `El usuario ${user} se ha unido al chat.`);
-    });
-
-
-socket.on("enviarMensaje", async (messageData) => {
-    console.log(`Nuevo mensaje de ${messageData.usuario}: ${messageData.mensaje}`);
-    
-    // Llama a addMessage con los argumentos correctos (user y message)
-    const result = await chatService.addMessage(messageData.usuario, messageData.mensaje);
-
-    // Emitir el evento "nuevoMensaje" con el objeto messageData
-    io.emit("nuevoMensaje", messageData);
-});
-
-
-
 });
 

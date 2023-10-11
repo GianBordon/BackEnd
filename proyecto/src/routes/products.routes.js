@@ -18,7 +18,7 @@ const router = Router();
         try {
             const product = req.body;
             const result = await productsService.createProduct(product);
-            res.json({status:"success", data:result});
+            res.json({status:"success", result});
         } catch (error) {
             res.status(500).json({status:"error", message:error.message});
         }
@@ -27,7 +27,7 @@ const router = Router();
     // Ruta GET para obtener un producto por ID
     router.get("/:productId", async(req,res)=>{
         try {
-            const productId = req.params.productId;
+            const productId = req.params.productId.toString();
             const result = await productsService.getProductById(productId);
             res.json({status:"success", data:result});
         } catch (error) {
@@ -39,7 +39,7 @@ const router = Router();
     router.put("/:productId", async(req,res)=>{
         try {
             const product = req.body;
-            const productId = req.params.productId;
+            const productId = req.params.productId.toString();
             const result = await productsService.updateProduct(productId,product);
             res.json({status:"success", data:result});
         } catch (error) {
@@ -50,7 +50,7 @@ const router = Router();
     // Ruta DELETE para eliminar un producto por su ID
     router.delete("/:productId", async(req,res)=>{
         try {
-            const productId = req.params.productId;
+            const productId = req.params.productId.toString();
             const result = await productsService.deleteProduct(productId);
             res.json({status:"success", data:result});
         } catch (error) {

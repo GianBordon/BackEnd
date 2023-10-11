@@ -5,8 +5,9 @@ body {
 .nav-bar {
     background-color: #000814;
     color: #fff;
-    padding: 30px;
     text-align: right;
+    margin-top: 10px;
+    padding: 20px;
 }
 .nav-bar .cat {
     margin-left: 30px;

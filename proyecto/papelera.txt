@@ -1,9 +1,6 @@
 proyecto/
                    node_modules
                    src/
-                          files/
-                                    carts.json
-                                    productos.json
                           config/
                                     dbConnection.js
                           dao/
@@ -15,30 +12,40 @@ proyecto/
                                              mongo/ 
                                                     models/
                                                             carts.model.js
-                                                            chat.model.js
                                                             products.model.js
                                                     cartsManagerMongo.js
-                                                    chatManagerMongo.js
                                                     productsManagerMongo.js
                                              index.js
+                          files/
+                                    carts.json
+                                    productos.json
                           public/
                                     css/
                                              main.css
                                              home.css
-                                             chat.css
+                                             carrito.css
+                                             products.css
+                                             productsDetail.css
                                     js/
-                                             main.js
-                                             home.js
-                                             chat.js
-                          views/
-                                    layouts/
-                                             main.hbs
-                                    home.hbs
-                                    chat.hbs
+                                             main.css
+                                             home.css
+                                             carrito.css
+                                             products.css
+                                             productsDetail.css
+                                    img/
+
+                                    video/
                           routes/
                                     carts.routes.js
                                     products.routes.js
                                     views.routes.js
+                          views/
+                                    layouts/
+                                             main.hbs
+                                    home.css
+                                    carrito.css
+                                    products.css
+                                    productsDetail.css
                    app.js
                    utils.js
                    package-lock.json
