@@ -25,23 +25,9 @@ export class ProductsManagerMongo {
         };
     };
 // Metodo para agregar las paginas, los limites,etc
-    async getProductsPaginate({ page = 1, limit = 10, sort = '', query = {} }) {
-        try {
-            const filter = {};
-            if (query.category) {
-                filter.category = query.category;
-            };
-            if (query.available !== undefined) {
-                filter.available = query.available === 'true';
-            };
-            const options = {
-                page: parseInt(page),
-                limit: parseInt(limit),
-                lean: true,
-                sort: sort === 'desc' ? { price: -1 } : sort === 'asc' ? { price: 1 } : {},
-            };
-
-            const result = await this.model.paginate(filter, options);
+    async getProductsPaginate(query,options) {
+        try { 
+            const result = await this.model.paginate(query,options);
             return result;
         } catch (error) {
             console.log("getProductsPaginate: ", error.message);

@@ -20,19 +20,29 @@ router.get('/', async (req, res) => {
 // Ruta para mostrar la lista de productos
 router.get('/products', async (req, res) => {
     try {
-        const { limit = 10, page = 1, sort = '', query = {} } = req.query;
+        const { limit = 10, page = 1,sort = 'asc', category, stock} = req.query;
+        const query = {};
+        const sortOptions = {};
 
-        // Validar y convertir los valores de limit y page a números enteros
-        const limitInt = parseInt(limit);
-        const pageInt = parseInt(page);
+        if (category) {
+            query.category = category;
+        }
+        if (stock) {
+            query.stock = stock;
+        }
 
-        const result = await productsService.getProductsPaginate({
-            page: pageInt,
-            limit: limitInt,
-            sort: sort,
-            query: query,
-        });
+        if (sort === 'asc') {
+            sortOptions.price = 1; // Orden ascendente por precio
+        } else if (sort === 'desc') {
+            sortOptions.price = -1; // Orden descendente por precio
+        } else {
+            // Si el valor de `sort` no es válido, puedes establecer un valor predeterminado.
+            sortOptions.price = 1;
+        }
 
+        const options = { limit,page,sort: sortOptions,lean: true};
+        const result = await productsService.getProductsPaginate(query,options);
+        const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
         const dataProducts = {
             status: "success",
             payload: result.docs,
@@ -42,8 +52,10 @@ router.get('/products', async (req, res) => {
             page: result.page,
             hasPrevPage: result.hasPrevPage,
             hasNextPage: result.hasNextPage,
+            prevLink: result.hasPrevPage ? `${baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`)}` : null,
+            nextLink: result.hasNextPage ? baseUrl.includes("page") ?
+            baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null
         };
-
         res.render("products", dataProducts);
     } catch (error) {
         console.error("Error al recuperar los productos:", error);

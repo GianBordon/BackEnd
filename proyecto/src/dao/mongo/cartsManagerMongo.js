@@ -65,20 +65,19 @@ export class CartsManagerMongo {
     async deleteProduct(cartId, productId) {
         try {
             const cart = await this.getCartById(cartId);
-            const existingProduct = cart.products.find((product) => product.productId._id.toString() === productId);
-
+            const existingProduct = cart.products.find((product) => product.productId && product.productId._id.toString() === productId);
             if (existingProduct) {
-                cart.products = cart.products.filter((product) => product.productId._id.toString() !== productId);
+                cart.products = cart.products.filter((product) => product.productId && product.productId._id.toString() !== productId);
                 const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true });
                 return result;
             } else {
                 throw new Error("El producto no se puede eliminar porque no ha sido agregado");
-            };
+            }
         } catch (error) {
             console.log("deleteProduct: ", error.message);
             throw new Error("No se pudo eliminar el producto del carrito");
-        };
-    };
+        }
+    }
     // Metodo para modificar la cantidad de un producto segun su ID y el ID del carrito 
     async updateProductCart(cartId, productId, newQuantity) {
         try {
