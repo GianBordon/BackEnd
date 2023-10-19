@@ -36,6 +36,18 @@ app.use(express.urlencoded({extended:true}));
 // Conexion base de datos 
 connectDB();
 
+//configuración de session
+app.use(session({
+    store: MongoStore.create({
+        ttl: 3000,
+        mongoUrl: "mongodb+srv://shiammdp21:742404@ecomerce.ovxhziv.mongodb.net/ecomerceDB?retryWrites=true&w=majority"
+    }),
+    secret: "secretSessionCoder",
+    resave: true,
+    saveUninitialized: true
+}));
+console.log('Sesiones configuradas correctamente');
+
 //Rutas para las Vistas
 app.use(viewsRouter);
 
@@ -50,15 +62,3 @@ const io = new Server(httpServer);
 io.on('connection', (socket) => {
     console.log('Cliente Conectado:', socket.id);
 });
-
-//configuración de session
-app.use(session({
-    store: MongoStore.create({
-        ttl: 3000,
-        mongoUrl: "mongodb+srv://shiammdp21:742404@ecomerce.ovxhziv.mongodb.net/ecomerceDB?retryWrites=true&w=majority"
-    }),
-    secret: "secretSessionCoder",
-    resave: true,
-    saveUninitialized: true
-}));
-console.log('Sesiones configuradas correctamente');

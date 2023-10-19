@@ -8,9 +8,8 @@ const router = Router();
 // Ruta para mostrar la lista de productos
 router.get('/', async (req, res) => {
     try {
-        const products = await productsService.getProducts();
-        const style = "home.css";
-        res.render("home", { products, style });
+        const style = "loginView.css";
+        res.render("loginView", {style});
     } catch (error) {
         console.error("Error al recuperar los productos:", error);
         res.status(500).send("Error al recuperar los productos.");
@@ -56,6 +55,11 @@ router.get('/products', async (req, res) => {
             nextLink: result.hasNextPage ? baseUrl.includes("page") ?
             baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null
         };
+        if (req.session.email) {
+            dataProducts.userEmail = req.session.email;
+            dataProducts.userRole = req.session.role;
+            dataProducts.userName = req.session.first_name;
+        }
         res.render("products", dataProducts);
     } catch (error) {
         console.error("Error al recuperar los productos:", error);
@@ -91,19 +95,18 @@ router.get('/products', async (req, res) => {
 });
 
 router.get("/signup",(req,res)=>{
-    res.render("signupView");
-});
-
-router.get("/login",(req,res)=>{
-    res.render("loginView");
+    const style = "signupView.css";
+    res.render("signupView", {style});
 });
 
 router.get("/profile",(req,res)=>{
     if(req.session.email){
         const userEmail = req.session.email;
-        res.render("profileView",{userEmail});
+        const userRole = req.session.role;
+        const userName = req.session.first_name;
+        res.render("profileView", { userEmail, userName, userRole });
     } else {
-        res.redirect("/login");
+        res.redirect("/");
     }
 });
 export {router as viewsRouter}
