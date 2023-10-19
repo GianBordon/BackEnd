@@ -13,8 +13,10 @@ proyecto/
                                                     models/
                                                             carts.model.js
                                                             products.model.js
+                                                            users.model.js
                                                     cartsManagerMongo.js
                                                     productsManagerMongo.js
+                                                    usersManagerMongo.js
                                              index.js
                           files/
                                     carts.json
@@ -26,12 +28,19 @@ proyecto/
                                              carrito.css
                                              products.css
                                              productsDetail.css
+                                             loginView.css
+                                             profileView.css
+                                             signupView.css
+
                                     js/
-                                             main.css
-                                             home.css
-                                             carrito.css
-                                             products.css
-                                             productsDetail.css
+                                             main.js
+                                             home.js
+                                             carrito.js
+                                             products.js
+                                             productsDetail.js
+                                             loginView.js
+                                             profileView.js
+                                             signupView.js
                                     img/
 
                                     video/
@@ -39,6 +48,7 @@ proyecto/
                                     carts.routes.js
                                     products.routes.js
                                     views.routes.js
+                                    sesions.routes.js
                           views/
                                     layouts/
                                              main.hbs
@@ -46,6 +56,9 @@ proyecto/
                                     carrito.css
                                     products.css
                                     productsDetail.css
+                                    loginView.hbs
+                                    profileView.hbs
+                                    signupView.hbs
                    app.js
                    utils.js
                    package-lock.json
