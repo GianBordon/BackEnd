@@ -1,29 +1,21 @@
 import express from 'express';
-import { engine } from 'express-handlebars';
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import { __dirname } from "./utils.js";
 import path from "path";
+import cookieParser from "cookie-parser"
+import { engine } from 'express-handlebars';
+import { __dirname } from "./utils.js";
 import { Server } from 'socket.io'; 
+import { connectDB } from './config/dbConnection.js';
+import { config  } from "./config/config.js";
+
 import { viewsRouter } from './routes/views.routes.js';
+import { sessionsRouter } from "./routes/sessions.routes.js";
 import { productsRouter } from './routes/products.routes.js';
 import { cartsRouter } from './routes/carts.routes.js';
-import { connectDB } from './config/dbConnection.js';
-import cookieParser from "cookie-parser"
-import { sessionsRouter } from "./routes/sessions.routes.js";
-
 
 const app = express();
 const port = process.env.PORT || 8080;
-
-
-//servidor de express con el protocolo http
-const httpServer = app.listen(port, () => console.log(`Servidor Express escuchando en el puerto ${port}`));
-
-//configuracion del motor de plantillas
-app.engine('.hbs', engine({extname: '.hbs'}));
-app.set('view engine', '.hbs');
-app.set('views', path.join(__dirname, "/views"));
 
 // Midelware para los archivos js y css
 app.use(express.static(path.join(__dirname, "/public")));
@@ -33,20 +25,33 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended:true}));
 
+//servidor de express con el protocolo http
+const httpServer = app.listen(port, () => console.log(`Servidor Express escuchando en el puerto ${port}`));
+
 // Conexion base de datos 
 connectDB();
 
-//configuración de session
+//configuracion del motor de plantillas
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', '.hbs');
+app.set('views', path.join(__dirname, "/views"));
+
+// configuración de session
 app.use(session({
     store: MongoStore.create({
-        ttl: 3000,
-        mongoUrl: "mongodb+srv://shiammdp21:742404@ecomerce.ovxhziv.mongodb.net/ecomerceDB?retryWrites=true&w=majority"
+        ttl:3000,
+        mongoUrl:config.mongo.url
     }),
-    secret: "secretSessionCoder",
-    resave: true,
-    saveUninitialized: true
+    secret:"secretSessionCoder",
+    resave:true,
+    saveUninitialized:true
 }));
 console.log('Sesiones configuradas correctamente');
+
+// //configurar passport
+// initializePassport();
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 //Rutas para las Vistas
 app.use(viewsRouter);

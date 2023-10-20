@@ -3,3 +3,6 @@ node_modules
 
 #Archivos Basura
 papelera.txt
+
+#Credenciales
+.env
