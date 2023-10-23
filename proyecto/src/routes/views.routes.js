@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 // Ruta para mostrar la lista de productos
 router.get('/products', async (req, res) => {
     try {
-        const { limit = 10, page = 1,sort = 'asc', category, stock} = req.query;
+        const { limit = 12, page = 1,sort = 'asc', category, stock} = req.query;
         const query = {};
         const sortOptions = {};
 
@@ -100,10 +100,10 @@ router.get("/signup",(req,res)=>{
 });
 
 router.get("/profile",(req,res)=>{
-    if(req.session.email){
-        const userEmail = req.session.email;
-        const userRole = req.session.role;
-        const userName = req.session.first_name;
+    if(req.user?.email){
+        const userEmail = req.user.email;
+        const userRole = req.user.role;
+        const userName = req.user.first_name;
         res.render("profileView", { userEmail, userName, userRole });
     } else {
         res.redirect("/");

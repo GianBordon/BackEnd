@@ -26,4 +26,16 @@ export class UsersManagerMongo {
             throw new Error('Se produjo un error al obtener el usuario por email');
         }
     }
+
+    // Metodo para obtener un usuario por su ID
+    async findUserById(id) {
+        try {
+            // Aquí, implementa la lógica para buscar un usuario por su ID en la base de datos
+            const user = await this.model.findById(id);
+            return user;
+        } catch (error) {
+            console.error('findUserById:', error.message);
+            throw new Error('Error al buscar el usuario por ID');
+        }
+    }
 };

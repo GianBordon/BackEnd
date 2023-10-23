@@ -3,11 +3,13 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import path from "path";
 import cookieParser from "cookie-parser"
+import passport from "passport";
 import { engine } from 'express-handlebars';
 import { __dirname } from "./utils.js";
 import { Server } from 'socket.io'; 
 import { connectDB } from './config/dbConnection.js';
 import { config  } from "./config/config.js";
+import { initializePassport } from "./config/passport.config.js";
 
 import { viewsRouter } from './routes/views.routes.js';
 import { sessionsRouter } from "./routes/sessions.routes.js";
@@ -48,10 +50,10 @@ app.use(session({
 }));
 console.log('Sesiones configuradas correctamente');
 
-// //configurar passport
-// initializePassport();
-// app.use(passport.initialize());
-// app.use(passport.session());
+//configurar passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Rutas para las Vistas
 app.use(viewsRouter);
